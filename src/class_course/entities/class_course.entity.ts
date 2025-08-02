@@ -8,16 +8,13 @@ export class ClassCourse {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
   @ManyToOne(() => Course, (course) => course.classCourses)
   course: Course;
 
   @ManyToOne(() => Class, classes => classes.classCourses)
   classes: Class;
 
-  @OneToMany(()=>ClassCourseTeacher, classCourseTeacher => classCourseTeacher.classCourse, {cascade: true})
+  @OneToMany(()=>ClassCourseTeacher, classCourseTeacher => classCourseTeacher.classCourse, {cascade: true},)
   classCourseTeachers: ClassCourseTeacher[];
 
 

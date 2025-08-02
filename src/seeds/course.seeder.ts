@@ -1,7 +1,7 @@
 import { Course } from 'src/course/entities/course.entity';
 import {  DataSource } from 'typeorm';
 import { Seeder, SeederFactoryManager } from 'typeorm-extension';
-export class AdminSeeder implements Seeder {
+export class CourseSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager,

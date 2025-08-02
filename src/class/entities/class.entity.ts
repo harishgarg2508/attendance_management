@@ -2,17 +2,15 @@ import { Admin } from "src/admin/entities/admin.entity";
 import { ClassCourse } from "src/class_course/entities/class_course.entity";
 import { Student } from "src/student/entities/student.entity";
 import {  Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Standard } from "../enums/standard.enum";
 
 @Entity()
 export class Class {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    name: string;
-
-    @Column()
-    standard: string;
+    @Column({type:'enum',unique: true,enum:Standard})
+    standard: Standard;
 
     @Column()
     academicYear: string;

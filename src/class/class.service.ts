@@ -1,11 +1,81 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { ClassRepository } from 'src/repository/class.repository';
+import { AdminRepository } from 'src/repository/admin.repository';
+import { ClassCourseRepository } from 'src/repository/class_course.repository';
+import { ClassCourseService } from 'src/class_course/class_course.service';
+import { DataSource } from 'typeorm';
+import { ClassCourseTeacherService } from 'src/class-course_teacher/class-course_teacher.service';
+import { StudentRepository } from 'src/repository/student.repository';
+import { Student } from 'src/student/entities/student.entity';
+import { StudentService } from 'src/student/student.service';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassService {
-  create(createClassDto: CreateClassDto) {
-    return 'This action adds a new class';
+  constructor(
+    private readonly classRepository: ClassRepository,
+    private readonly adminRepository: AdminRepository,
+    private readonly classCourseService: ClassCourseService,
+    private readonly ClassCourseTeacherService: ClassCourseTeacherService,
+    private readonly studentService: StudentService,
+    private readonly studentRepository: StudentRepository,
+    private dataSource: DataSource,
+  ) {}
+
+  @Transactional()
+  async createClass(createClassDto: CreateClassDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const admin = await this.adminRepository.findOneBy({
+        id: createClassDto.adminId,
+
+      });
+      if (!admin) {
+        throw new NotFoundException('Admin not found');
+      }
+
+      const classEntity = await this.classRepository.createClass(
+        createClassDto,
+        admin,
+      );
+      const classId = classEntity.id;
+
+      for(const student of createClassDto.students){
+    
+        const studentData = await this.studentService.addStudent(classEntity, student.studentId);
+             
+        
+      }
+
+      for (const courseTeacher of createClassDto.courseTeacher) {
+        const classCourse = await this.classCourseService.addCourse(
+          classId,
+          courseTeacher.courseId,
+        );
+        const classCourseTeacher =
+          await this.ClassCourseTeacherService.addClassCourseTeacher(
+            classCourse.id,
+            courseTeacher.teacherId,
+          );
+      }
+
+      await queryRunner.commitTransaction();
+      return {
+        message: 'Class created successfully',
+        class: classEntity,
+        courseTeacher: createClassDto.courseTeacher,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   findAll() {
