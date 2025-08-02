@@ -3,7 +3,6 @@ import { ClassCourseTeacher } from 'src/class-course_teacher/entities/class-cour
 import { ClassCourse } from 'src/class_course/entities/class_course.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { DataSource, Repository } from 'typeorm';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher> {
@@ -12,7 +11,6 @@ export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher>
 
   }
 
-  @Transactional()
   async addClassCourseTeacher(classCourse:ClassCourse, teacher:Teacher) {
     const classCourseTeacherEntity = this.create({
       classCourse,

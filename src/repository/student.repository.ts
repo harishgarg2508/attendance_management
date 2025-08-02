@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Class } from 'src/class/entities/class.entity';
 import { Student } from 'src/student/entities/student.entity';
 import { DataSource, Repository } from 'typeorm';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class StudentRepository extends Repository<Student> {
@@ -10,7 +9,7 @@ export class StudentRepository extends Repository<Student> {
     super(Student, dataSource.createEntityManager());
 
   }
-  @Transactional()
+  
   async addStudents(classEntity: Class, studentEntity: Student) {
     studentEntity.classes = classEntity;
     return await this.save(studentEntity);

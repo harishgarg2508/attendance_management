@@ -4,7 +4,6 @@ import { UpdateClassCourseTeacherDto } from './dto/update-class-course_teacher.d
 import { ClassCourseRepository } from 'src/repository/class_course.repository';
 import { TeacherRepository } from 'src/repository/teacher.repository';
 import { ClassCourseTeacherRepository } from 'src/repository/class-course_teacher.repository';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassCourseTeacherService {
@@ -16,7 +15,7 @@ export class ClassCourseTeacherService {
     return 'This action adds a new classCourseTeacher';
   }
 
-  @Transactional()
+  
   async addClassCourseTeacher(classCourseId: number, teacherId: number) {
       const classCourse = await this.classCourseRepository.findOneBy({id: classCourseId});
       if(!classCourse){

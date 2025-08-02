@@ -3,14 +3,11 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { ClassRepository } from 'src/repository/class.repository';
 import { AdminRepository } from 'src/repository/admin.repository';
-import { ClassCourseRepository } from 'src/repository/class_course.repository';
 import { ClassCourseService } from 'src/class_course/class_course.service';
 import { DataSource } from 'typeorm';
 import { ClassCourseTeacherService } from 'src/class-course_teacher/class-course_teacher.service';
 import { StudentRepository } from 'src/repository/student.repository';
-import { Student } from 'src/student/entities/student.entity';
 import { StudentService } from 'src/student/student.service';
-import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassService {
@@ -24,7 +21,7 @@ export class ClassService {
     private dataSource: DataSource,
   ) {}
 
-  @Transactional()
+  
   async createClass(createClassDto: CreateClassDto) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
