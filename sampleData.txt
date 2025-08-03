@@ -1,0 +1,94 @@
+GET /admin
+PATCH /admin/students/:studentId/status
+PATCH /admin/teachers/:teacherId/status
+
+POST /class
+
+{
+  "standard": "1st",
+  "academicYear": "2025-2026",
+  "adminId": 1,
+  "students": [
+    {
+      "studentId": 101
+    },
+    {
+      "studentId": 102
+    },
+    {
+      "studentId": 103
+    }
+  ],
+  "courseTeacher": [
+    {
+      "courseId": 10,
+      "teacherId": 1001
+    },
+    {
+      "courseId": 11,
+      "teacherId": 1002
+    }
+  ]
+}
+
+GET /class
+PATCH /class/students
+
+{
+  "classId": 5,
+  "students": [
+    {
+      "studentId": 201
+    },
+    {
+      "studentId": 202
+    },
+    {
+      "studentId": 203
+    }
+  ]
+}
+
+PATCH /class/courses
+{
+  "classId": 7,
+  "courseId": 15,
+  "teacherId": 501
+}
+
+GET /student?name=""&studentid=1
+GET /teacher
+PATCH /teacher/students/attandance
+{
+  "teacherId": 301,
+  "classId": 12,
+  "studentAttendance": [
+    {
+      "studentId": 1001,
+      "status": "present"
+    },
+    {
+      "studentId": 1002,
+      "status": "absent"
+    },
+    {
+      "studentId": 1003,
+      "status": "present"
+    }
+  ]
+}
+
+
+***************************
+      ROUTES
+***************************
+GET /admin
+PATCH /admin/students/:studentId/status
+PATCH /admin/teachers/:teacherId/status
+POST /class
+GET /class
+PATCH /class/students
+PATCH /class/courses
+GET /student
+GET /teacher
+PATCH /teacher/students/attandance
