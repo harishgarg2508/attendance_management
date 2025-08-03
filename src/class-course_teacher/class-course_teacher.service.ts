@@ -4,6 +4,9 @@ import { UpdateClassCourseTeacherDto } from './dto/update-class-course_teacher.d
 import { ClassCourseRepository } from 'src/repository/class_course.repository';
 import { TeacherRepository } from 'src/repository/teacher.repository';
 import { ClassCourseTeacherRepository } from 'src/repository/class-course_teacher.repository';
+import { EntityManager } from 'typeorm';
+import { ClassCourse } from 'src/class_course/entities/class_course.entity';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
 
 @Injectable()
 export class ClassCourseTeacherService {
@@ -16,20 +19,21 @@ export class ClassCourseTeacherService {
   }
 
   
-  async addClassCourseTeacher(classCourseId: number, teacherId: number) {
-      const classCourse = await this.classCourseRepository.findOneBy({id: classCourseId});
+  async addClassCourseTeacher(classCourseId: number, teacherId: number, manager:EntityManager){ {
+      const classCourse = await manager.findOneBy(ClassCourse,{id: classCourseId});
       if(!classCourse){
         throw new NotFoundException('Class Course not found');
       }
-      const teacher = await this.teacherRepository.findOneBy({id: teacherId});
+      const teacher = await manager.findOneBy(Teacher,{id: teacherId});
       if(!teacher){
         throw new NotFoundException('Teacher not found');
       }
 
-    const classCourseTeacher = await this.classCourseTeacherRepository.addClassCourseTeacher(classCourse, teacher);
+    const classCourseTeacher = await this.classCourseTeacherRepository.addClassCourseTeacher(classCourse, teacher,manager);
       
     return classCourseTeacher;
   }
+}
 
   findAll() {
     return `This action returns all classCourseTeacher`;

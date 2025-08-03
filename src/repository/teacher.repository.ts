@@ -9,4 +9,11 @@ export class TeacherRepository extends Repository<Teacher> {
 
   }
 
+  async updateTeacherStatus(teacher: Teacher) {
+    teacher.isActive = !teacher.isActive;
+     await this.save(teacher);
+     return `${teacher.name} status updated to ${teacher.isActive ? 'Active' : 'Inactive'}`;
+    
+  }
+
 }

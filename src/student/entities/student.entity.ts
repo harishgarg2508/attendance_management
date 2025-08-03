@@ -12,9 +12,18 @@ export class Student {
     @Column({unique: true})
     studentId: number;
 
+    @Column({type:'int',default:0})
+    sessionAttended: number
+    
+    @Column({type:'int',default:0})
+    sessionTotal: number
+
+
     @Column({type: 'boolean', default: true})
     isActive: boolean;
 
     @ManyToOne(() => Class,classes=>classes.student)
     classes: Class;
+
+
 }

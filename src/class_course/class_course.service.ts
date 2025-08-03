@@ -5,7 +5,9 @@ import { ClassCourseRepository } from 'src/repository/class_course.repository';
 import { ClassRepository } from 'src/repository/class.repository';
 import { CourseRepository } from 'src/repository/course.repository';
 import { ClassCourseTeacherDto } from 'src/class/dto/course-teacher.dto';
-import { Transactional } from 'typeorm-transactional';
+import { EntityManager } from 'typeorm';
+import { Class } from 'src/class/entities/class.entity';
+import { Course } from 'src/course/entities/course.entity';
 
 @Injectable()
 export class ClassCourseService {
@@ -16,22 +18,22 @@ export class ClassCourseService {
   create(createClassCourseDto: CreateClassCourseDto) {
     return 'This action adds a new classCourse';
   }
-@Transactional()
-  async addCourse(classId: number,courseId: number) {
-    const classEntity = await this.classRepository.findOneBy({id: classId});
+  async addCourse(classId: number,courseId: number,manager:EntityManager){ {
+    const classEntity = await manager.findOneBy(Class,{id: classId});
     if(!classEntity){
       throw new NotFoundException('Class not found');
     }
 
-    const courseEntity = await this.courseRepository.findOneBy({id: courseId});
+    const courseEntity = await manager.findOneBy(Course,{id: courseId});
     if(!courseEntity){
       throw new NotFoundException('Course not found');
     }
 
-    const classCourseEntity = await this.classCourseRepository.addCourse(classEntity, courseEntity);
+    const classCourseEntity = await this.classCourseRepository.addCourse(classEntity, courseEntity,manager);
     return classCourseEntity;
    
   }
+}
   findAll() {
     return `This action returns all classCourse`;
   }

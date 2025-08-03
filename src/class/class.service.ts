@@ -4,10 +4,12 @@ import { UpdateClassDto } from './dto/update-class.dto';
 import { ClassRepository } from 'src/repository/class.repository';
 import { AdminRepository } from 'src/repository/admin.repository';
 import { ClassCourseService } from 'src/class_course/class_course.service';
-import { DataSource } from 'typeorm';
+import { DataSource, Filter } from 'typeorm';
 import { ClassCourseTeacherService } from 'src/class-course_teacher/class-course_teacher.service';
 import { StudentRepository } from 'src/repository/student.repository';
 import { StudentService } from 'src/student/student.service';
+import { Admin } from 'src/admin/entities/admin.entity';
+import { FilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class ClassService {
@@ -26,9 +28,10 @@ export class ClassService {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
+    
     try {
-      const admin = await this.adminRepository.findOneBy({
+      const manager = queryRunner.manager;
+      const admin = await manager.findOneBy(Admin,{
         id: createClassDto.adminId,
 
       });
@@ -39,12 +42,13 @@ export class ClassService {
       const classEntity = await this.classRepository.createClass(
         createClassDto,
         admin,
+        manager,
       );
       const classId = classEntity.id;
 
       for(const student of createClassDto.students){
     
-        const studentData = await this.studentService.addStudent(classEntity, student.studentId);
+        const studentData = await this.studentService.addStudent(classEntity, student.studentId,manager);
              
         
       }
@@ -53,11 +57,13 @@ export class ClassService {
         const classCourse = await this.classCourseService.addCourse(
           classId,
           courseTeacher.courseId,
+          manager,
         );
         const classCourseTeacher =
           await this.ClassCourseTeacherService.addClassCourseTeacher(
             classCourse.id,
             courseTeacher.teacherId,
+            manager,
           );
       }
 
@@ -73,6 +79,11 @@ export class ClassService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async getClassInformation(filters:FilterDto){
+     return this.classRepository.getClassInformation(filters);
+   
   }
 
   findAll() {

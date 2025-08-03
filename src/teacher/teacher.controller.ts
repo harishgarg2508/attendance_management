@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { AttendanceDto } from './dto/attendance.dto';
 
 @Controller('teacher')
 export class TeacherController {
@@ -21,6 +22,21 @@ export class TeacherController {
   findOne(@Param('id') id: string) {
     return this.teacherService.findOne(+id);
   }
+
+  @Patch('students/attendance')
+  markAttendance(@Body() attendanceDto: AttendanceDto) {
+    return this.teacherService.markAttendance(attendanceDto);
+  }
+
+
+
+
+
+  updateTeacherStatus(@Param('studentId') studentId: string) {
+    return this.teacherService.updateTeacherStatus(+studentId);
+  }
+
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {

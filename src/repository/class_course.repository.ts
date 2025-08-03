@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Class } from 'src/class/entities/class.entity';
 import { ClassCourse } from 'src/class_course/entities/class_course.entity';
 import { Course } from 'src/course/entities/course.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 
 @Injectable()
 export class ClassCourseRepository extends Repository<ClassCourse> {
@@ -11,13 +11,13 @@ export class ClassCourseRepository extends Repository<ClassCourse> {
 
   }
   
-  async addCourse(classEntity:Class, courseEntity:Course) {
-    const classCourseEntity = this.create({
+  async addCourse(classEntity:Class, courseEntity:Course,manager:EntityManager) {
+    const classCourseEntity = manager.create(ClassCourse,{
       classes: classEntity,
       course: courseEntity,
     });
 
-    const classCourse = await this.save(classCourseEntity);
+    const classCourse = await manager.save(classCourseEntity);
 
     return classCourse;
   

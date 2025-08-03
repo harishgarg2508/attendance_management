@@ -15,6 +15,9 @@ export class Class {
     @Column()
     academicYear: string;
 
+    @Column({default: 0})
+    sessionCount: number;
+
     @OneToMany(()=> ClassCourse, classCourse => classCourse.classes, {cascade: true})
     classCourses: ClassCourse[];
 

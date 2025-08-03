@@ -1,14 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { CreateClassCourseDto } from 'src/class_course/dto/create-class_course.dto';
 import { ClassCourseService } from 'src/class_course/class_course.service';
+import { AddStudentDto } from './dto/student.dto';
+import { StudentService } from 'src/student/student.service';
+import { FilterDto } from './dto/filter.dto';
 
 @Controller('class')
 export class ClassController {
   constructor(private readonly classService: ClassService,
-   private readonly classCourseService: ClassCourseService
+   private readonly classCourseService: ClassCourseService,
+   private readonly studentService: StudentService
   ) {}
 
   @Post()
@@ -19,9 +23,15 @@ export class ClassController {
  
 
   @Get()
-  findAll() {
-    return this.classService.findAll();
+  getClassInformation(@Query() filters: FilterDto) {
+    return this.classService.getClassInformation(filters);
   }
+
+  @Patch('students')
+  addStudetsToClass(@Body() addStudentDto:AddStudentDto) {
+    return this.studentService.addStudetsToClass(addStudentDto);
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
