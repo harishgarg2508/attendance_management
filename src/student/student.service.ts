@@ -115,19 +115,27 @@ export class StudentService {
       throw new NotFoundException(`Class with id ${classId} not found`);
     }
     for (const student of students) {
-      const studentEntity = await this.studentRepository.findOneBy({
-        id: student.studentId,
+      const studentEntity = await this.studentRepository.findOne({
+        where:{id: student.studentId},
+        relations:['classes']
       });
       if (!studentEntity) {
         throw new NotFoundException(
           `Student with id ${student.studentId} not found`,
         );
       }
+      if (studentEntity.classes?.id === classEntity.id) {
+        throw new ForbiddenException(
+          `Student ${studentEntity.name} with id ${studentEntity.id} already added to class ${studentEntity.classes.standard}`,
+        );
+      }
       await this.studentRepository.addStudentsToClass(
         classEntity.id,
         studentEntity,
       );
+
     }
+    return 'Students added to class successfully';
   }
 
   async studentInformation(studentFilter: StudentFilterDto) {

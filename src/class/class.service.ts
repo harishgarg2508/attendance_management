@@ -38,6 +38,7 @@ export class ClassService {
       if (!admin) {
         throw new NotFoundException('Admin not found');
       }
+      
 
       const classEntity = await this.classRepository.createClass(
         createClassDto,

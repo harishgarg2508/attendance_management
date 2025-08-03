@@ -34,7 +34,7 @@ export class ClassCourseService {
       throw new NotFoundException('Course not found');
     }
 
-    const classCourseEntity = await this.classCourseRepository.addCourse(classEntity, courseEntity,manager);
+    const classCourseEntity = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id,manager);
     return classCourseEntity;
    
   }
@@ -62,11 +62,14 @@ async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
     if (!teacherEntity) {
       throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
     }
-    const isTeacherAssigned = teacherEntity.classCourseTeachers.some((classCourseTeacher) => {
-      return classCourseTeacher.classCourse?.classes?.id === classEntity.id;
-    })
-    if(isTeacherAssigned){
-      throw new ForbiddenException(`Teacher with ID ${teacherId} already assigned to this${classId} class`);
+    const alreadyAssignedToClass = await manager.findOne(ClassCourse, {where: {
+        classes: { id: classId },
+        classCourseTeachers: { teacher: { id: teacherId } }
+      },
+      relations: ['classCourseTeachers', 'classes']
+    });
+    if(alreadyAssignedToClass){
+      throw new ForbiddenException(`Teacher with ID ${teacherId} is already assigned to class with ID ${classId}`);
     }
 
     const isThisCourseAlreadyAssigned = await manager.findOne(ClassCourse,{
@@ -76,7 +79,7 @@ async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
 
     if(isThisCourseAlreadyAssigned){
       await this.classCourseTeacherRepository.updateClassCourseTeacher(isThisCourseAlreadyAssigned.id, teacherEntity.id, manager);
-
+      return `Teacher with ID ${teacherId} is updated  to the course with ID ${courseId} in class with ID ${classId} successfully.`
     }
     else{
      const newClassCourse = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id, manager);
@@ -86,7 +89,7 @@ async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
 
 
     await queryRunner.commitTransaction()
-    return "Course information added successfully"
+    return `Teacher with ID ${teacherId} assigned to the course with ID ${courseId} in class with ID ${classId} successfully.`;
   } catch (error) {
     await queryRunner.rollbackTransaction();
     throw error;
@@ -96,6 +99,7 @@ async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
 
 
 }
+
   findAll() {
     return `This action returns all classCourse`;
   }

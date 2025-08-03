@@ -27,11 +27,7 @@ export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher>
     }
   }
 
-  async updateClassCourseTeacher(
-    classCourseId: number,
-    teacherId: number,
-    manager: EntityManager,
-  ) {
+  async updateClassCourseTeacher(classCourseId: number,teacherId: number,manager: EntityManager,) {
     return await manager.update(
       ClassCourseTeacher,
       { classCourse: { id: classCourseId }},
