@@ -6,6 +6,7 @@ export class StudentDto {
   studentId: number;
 }
 
+
 export class AddStudentDto {
   @IsInt()
   classId: number;

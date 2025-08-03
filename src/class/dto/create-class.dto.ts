@@ -1,9 +1,9 @@
-import { IsArray, IsEnum, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsEnum, IsNumber, IsString, Validate, ValidateNested } from "class-validator";
 import { ClassCourseTeacherDto } from "./course-teacher.dto";
 import { Type } from "class-transformer";
-import { Student } from "src/student/entities/student.entity";
 import { StudentDto } from "./student.dto";
 import { Standard } from "../enums/standard.enum";
+import { UniqueConstraint } from "./uniqieTeacher.validator";
 
 export class CreateClassDto {
     
@@ -25,5 +25,6 @@ export class CreateClassDto {
     @IsArray()
     @ValidateNested({ each: true })
     @Type(()=>ClassCourseTeacherDto)
+    @Validate(UniqueConstraint)
     courseTeacher:ClassCourseTeacherDto[];
 }

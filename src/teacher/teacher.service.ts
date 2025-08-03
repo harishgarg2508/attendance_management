@@ -14,6 +14,7 @@ import { DataSource } from 'typeorm';
 import { Teacher } from './entities/teacher.entity';
 import { Class } from 'src/class/entities/class.entity';
 import { ClassCourseRepository } from 'src/repository/class_course.repository';
+import { TeacherFilterDto } from './dto/teacherFilter.dto';
 
 @Injectable()
 export class TeacherService {
@@ -92,6 +93,11 @@ export class TeacherService {
       await queryRunner.release();
     }
   }
+
+  async teacherInformation(teacherFilter: TeacherFilterDto) {
+    return this.teacherRepository.teacherInformation(teacherFilter);
+  }
+
   findAll() {
     return `This action returns all teacher`;
   }

@@ -17,5 +17,4 @@ export class ClassCourse {
   @OneToMany(()=>ClassCourseTeacher, classCourseTeacher => classCourseTeacher.classCourse, {cascade: true},)
   classCourseTeachers: ClassCourseTeacher[];
 
-
 }

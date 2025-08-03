@@ -26,4 +26,27 @@ export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher>
       return classCourseTeacher;
     }
   }
+
+  async updateClassCourseTeacher(
+    classCourseId: number,
+    teacherId: number,
+    manager: EntityManager,
+  ) {
+    return await manager.update(
+      ClassCourseTeacher,
+      { classCourse: { id: classCourseId }},
+      { teacher: { id: teacherId } },
+    );
+  }
+
+  async addNewClassCourseTeacher(classCourseId: number, teacherId: number,manager: EntityManager){ 
+    const newClassCourseTeacher = manager.create(ClassCourseTeacher, {
+      classCourse: { id: classCourseId },
+      teacher: { id: teacherId },
+    
+    })
+    await manager.save(newClassCourseTeacher);
+    return newClassCourseTeacher;
+  }
+    
 }

@@ -1,6 +1,11 @@
-import { IsInt } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 
 export class ClassCourseTeacherDto {
+
+  @IsInt()
+  @IsOptional()
+  classId: number;
+
   @IsInt()
   courseId: number;
 

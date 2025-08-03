@@ -12,6 +12,9 @@ export class Class {
     @Column({type:'enum',unique: true,enum:Standard})
     standard: Standard;
 
+    @Column({nullable: true})
+    desctiption: string;
+    
     @Column()
     academicYear: string;
 

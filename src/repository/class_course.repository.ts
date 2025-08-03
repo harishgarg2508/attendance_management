@@ -24,4 +24,15 @@ export class ClassCourseRepository extends Repository<ClassCourse> {
   
   }
 
+  async addClassCourse(classId: number, courseId: number, manager: EntityManager) {
+    
+     const newClassCourse =  manager.create(ClassCourse, {
+      classes: { id: classId },
+      course: { id: courseId },
+    });
+    return await manager.save(newClassCourse);
+
+  }
+  
+
 }

@@ -15,6 +15,7 @@ import {
 } from 'src/teacher/dto/studentAttendance.dto';
 import { AddStudentDto } from 'src/class/dto/student.dto';
 import { ClassRepository } from 'src/repository/class.repository';
+import { StudentFilterDto } from './dto/studentFilter.deto';
 
 @Injectable()
 export class StudentService {
@@ -31,10 +32,17 @@ export class StudentService {
     studentId: number,
     manager: EntityManager,
   ) {
-    const student = await manager.findOneBy(Student, { id: studentId });
+    const student = await manager.findOne(Student, {
+      where: { id: studentId },
+      relations: ['classes'],
+    });
     if (!student) {
       throw new NotFoundException(`student with id ${studentId} not found`);
     }
+    if(student.classes.id){
+      throw new ForbiddenException(`student ${student.name} with id ${student.id} already added to class ${student.classes.standard}`);
+    }
+
 
     return this.studentRepository.addStudents(classEntity, student, manager);
   }
@@ -120,6 +128,10 @@ export class StudentService {
         studentEntity,
       );
     }
+  }
+
+  async studentInformation(studentFilter: StudentFilterDto) {
+    return this.studentRepository.studentInformation(studentFilter);
   }
   findAll() {
     return `This action returns all student`;

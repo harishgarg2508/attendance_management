@@ -7,6 +7,7 @@ import { ClassCourseService } from 'src/class_course/class_course.service';
 import { AddStudentDto } from './dto/student.dto';
 import { StudentService } from 'src/student/student.service';
 import { FilterDto } from './dto/filter.dto';
+import { ClassCourseTeacherDto } from './dto/course-teacher.dto';
 
 @Controller('class')
 export class ClassController {
@@ -32,6 +33,10 @@ export class ClassController {
     return this.studentService.addStudetsToClass(addStudentDto);
   }
 
+  @Patch('courses')
+  addClassCourse(@Body() classCourseTeacherDto: ClassCourseTeacherDto) {
+    return this.classCourseService.addClassCourse(classCourseTeacherDto);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
