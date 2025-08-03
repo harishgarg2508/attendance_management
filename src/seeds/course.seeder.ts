@@ -26,6 +26,14 @@ export class CourseSeeder implements Seeder {
         name: 'ENGLISH',
         description: "you'll learn about english here",
       },
+      {
+        name: 'HISTORY',
+        description: "you'll learn about history here",
+      },
+      {
+        name: 'CHEMISTRY',
+        description: "you'll learn about chemistry here",
+      },
     ];
     await courseRepository.save(courseData);
     console.log('Courses seeding successful!');

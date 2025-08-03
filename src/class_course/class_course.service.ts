@@ -1,6 +1,4 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateClassCourseDto } from './dto/create-class_course.dto';
-import { UpdateClassCourseDto } from './dto/update-class_course.dto';
 import { ClassCourseRepository } from 'src/repository/class_course.repository';
 import { ClassRepository } from 'src/repository/class.repository';
 import { CourseRepository } from 'src/repository/course.repository';
@@ -20,9 +18,7 @@ export class ClassCourseService {
     private readonly classCourseTeacherRepository: ClassCourseTeacherRepository,
     private readonly dataSource: DataSource
   ) {}
-  create(createClassCourseDto: CreateClassCourseDto) {
-    return 'This action adds a new classCourse';
-  }
+ 
   async addCourse(classId: number,courseId: number,manager:EntityManager){ {
     const classEntity = await manager.findOneBy(Class,{id: classId});
     if(!classEntity){
@@ -40,7 +36,7 @@ export class ClassCourseService {
   }
 }
 
-async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
+async updateClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
   const { classId, courseId, teacherId } = classCourseTeacherDto;
   const queryRunner = this.dataSource.createQueryRunner();
   await queryRunner.connect();
@@ -100,19 +96,4 @@ async addClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
 
 }
 
-  findAll() {
-    return `This action returns all classCourse`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} classCourse`;
-  }
-
-  update(id: number, updateClassCourseDto: UpdateClassCourseDto) {
-    return `This action updates a #${id} classCourse`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} classCourse`;
-  }
 }

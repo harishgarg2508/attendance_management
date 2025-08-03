@@ -9,10 +9,12 @@ export class AdminRepository extends Repository<Admin> {
   }
   async getAllAdmins() {
     const qb = this.createQueryBuilder('admin')
-      .leftJoin('admin.classes', 'classes').addSelect(['classes.standard','classes.academicYear'])
+      .leftJoin('admin.classes', 'classes')
+      .addSelect(['classes.standard', 'classes.academicYear'])
 
-    .orderBy('admin.id', 'ASC')
-    .skip(0).take(10);
+      .orderBy('admin.id', 'ASC')
+      .skip(0)
+      .take(10);
 
     const [data, total] = await qb.getManyAndCount();
     return {

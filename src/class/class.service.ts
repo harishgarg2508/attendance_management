@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
-import { UpdateClassDto } from './dto/update-class.dto';
 import { ClassRepository } from 'src/repository/class.repository';
 import { AdminRepository } from 'src/repository/admin.repository';
 import { ClassCourseService } from 'src/class_course/class_course.service';
-import { DataSource, Filter } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { ClassCourseTeacherService } from 'src/class-course_teacher/class-course_teacher.service';
 import { StudentRepository } from 'src/repository/student.repository';
 import { StudentService } from 'src/student/student.service';
@@ -85,21 +84,5 @@ export class ClassService {
   async getClassInformation(filters:FilterDto){
      return this.classRepository.getClassInformation(filters);
    
-  }
-
-  findAll() {
-    return `This action returns all class`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} class`;
-  }
-
-  update(id: number, updateClassDto: UpdateClassDto) {
-    return `This action updates a #${id} class`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} class`;
   }
 }

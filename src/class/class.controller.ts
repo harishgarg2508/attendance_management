@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { ClassCourseService } from 'src/class_course/class_course.service';
@@ -25,13 +25,13 @@ export class ClassController {
   }
 
   @Patch('students')
-  addStudetsToClass(@Body() addStudentDto:AddStudentDto) {
-    return this.studentService.addStudetsToClass(addStudentDto);
+  updateStudetsInClass(@Body() addStudentDto:AddStudentDto) {
+    return this.studentService.updateStudetsInClass(addStudentDto);
   }
 
   @Patch('courses')
-  addClassCourse(@Body() classCourseTeacherDto: ClassCourseTeacherDto) {
-    return this.classCourseService.addClassCourse(classCourseTeacherDto);
+  updateClassCourse(@Body() classCourseTeacherDto: ClassCourseTeacherDto) {
+    return this.classCourseService.updateClassCourse(classCourseTeacherDto);
   }
 
 }

@@ -1,11 +1,8 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { TeacherRepository } from 'src/repository/teacher.repository';
 import { AttendanceDto } from './dto/attendance.dto';
 import { StudentService } from 'src/student/student.service';
@@ -25,9 +22,6 @@ export class TeacherService {
     private readonly classCourseRepository: ClassCourseRepository,
     private readonly dataSource: DataSource,
   ) {}
-  create(createTeacherDto: CreateTeacherDto) {
-    return 'This action adds a new teacher';
-  }
 
   async updateTeacherStatus(teacherId: number) {
     const teacher = await this.teacherRepository.findOneBy({ id: teacherId });
@@ -98,19 +92,5 @@ export class TeacherService {
     return this.teacherRepository.teacherInformation(teacherFilter);
   }
 
-  findAll() {
-    return `This action returns all teacher`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} teacher`;
-  }
-
-  update(id: number, updateTeacherDto: UpdateTeacherDto) {
-    return `This action updates a #${id} teacher`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} teacher`;
-  }
+  
 }

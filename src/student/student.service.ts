@@ -23,9 +23,7 @@ export class StudentService {
     private readonly studentRepository: StudentRepository,
     private readonly classRepository: ClassRepository,
   ) {}
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
-  }
+
 
   async addStudent(
     classEntity: Class,
@@ -108,7 +106,7 @@ export class StudentService {
     }
   }
 
-  async addStudetsToClass(addStudentDto: AddStudentDto) {
+  async updateStudetsInClass(addStudentDto: AddStudentDto) {
     const { classId, students } = addStudentDto;
     const classEntity = await this.classRepository.findOneBy({ id: classId });
     if (!classEntity) {
@@ -141,19 +139,5 @@ export class StudentService {
   async studentInformation(studentFilter: StudentFilterDto) {
     return this.studentRepository.studentInformation(studentFilter);
   }
-  findAll() {
-    return `This action returns all student`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
-  }
-
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} student`;
-  }
 }
