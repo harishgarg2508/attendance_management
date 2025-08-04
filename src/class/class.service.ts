@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
 import { ClassRepository } from 'src/repository/class.repository';
 import { AdminRepository } from 'src/repository/admin.repository';
@@ -47,7 +47,7 @@ export class ClassService {
       const classId = classEntity.id;
 
       for(const student of createClassDto.students){
-    
+        
         const studentData = await this.studentService.addStudent(classEntity, student.studentId,manager);
              
         
@@ -66,6 +66,8 @@ export class ClassService {
             manager,
           );
       }
+      //bulk data save 
+      //transactional manager decorator
 
       await queryRunner.commitTransaction();
       return {

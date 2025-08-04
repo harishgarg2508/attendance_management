@@ -13,7 +13,7 @@ export class Class {
     standard: Standard;
 
     @Column({nullable: true})
-    desctiption: string;
+    desctiption?: string;
     
     @Column()
     academicYear: string;
@@ -26,6 +26,7 @@ export class Class {
 
     @OneToMany(() => Student, student => student.classes, {cascade: true})
     student: Student[];
+
 
     @ManyToOne(() => Admin, admin => admin.classes)
     admin: Admin;

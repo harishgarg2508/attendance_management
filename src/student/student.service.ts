@@ -34,12 +34,15 @@ export class StudentService {
       where: { id: studentId },
       relations: ['classes'],
     });
+
     if (!student) {
       throw new NotFoundException(`student with id ${studentId} not found`);
     }
-    if(student.classes.id){
-      throw new ForbiddenException(`student ${student.name} with id ${student.id} already added to class ${student.classes.standard}`);
+
+    if ( student.classes ) {
+      throw new NotFoundException(`Student with ID ${studentId} is already assigned to a class`);
     }
+
 
 
     return this.studentRepository.addStudents(classEntity, student, manager);
@@ -141,3 +144,5 @@ export class StudentService {
   }
 
 }
+
+

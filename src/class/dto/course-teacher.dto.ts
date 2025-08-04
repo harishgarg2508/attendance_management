@@ -12,3 +12,4 @@ export class ClassCourseTeacherDto {
   @IsInt()
   teacherId: number;
 }
+//extend dto

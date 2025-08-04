@@ -29,6 +29,7 @@ export class ClassRepository extends Repository<Class> {
     return classData;
   }
 
+  //constants in constant file
   async getClassInformation(filters: FilterDto) {
     const { classId, courseId, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT, standard } = filters;
 

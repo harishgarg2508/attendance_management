@@ -23,6 +23,7 @@ export class ClassController {
   getClassInformation(@Query() filters: FilterDto) {
     return this.classService.getClassInformation(filters);
   }
+  //PUT
 
   @Patch('students')
   updateStudetsInClass(@Body() addStudentDto:AddStudentDto) {

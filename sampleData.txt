@@ -92,3 +92,6 @@ PATCH /class/courses
 GET /student
 GET /teacher
 PATCH /teacher/students/attandance
+
+
+//attendance table session table bulk data addition transactioal decorator frontend

@@ -1,3 +1,4 @@
+import { ClassCourseSession } from 'src/class-course-session/entities/class-course-session.entity';
 import { ClassCourseTeacher } from 'src/class-course_teacher/entities/class-course_teacher.entity';
 import { Class } from 'src/class/entities/class.entity';
 import { Course } from 'src/course/entities/course.entity';
@@ -16,5 +17,8 @@ export class ClassCourse {
 
   @OneToMany(()=>ClassCourseTeacher, classCourseTeacher => classCourseTeacher.classCourse, {cascade: true},)
   classCourseTeachers: ClassCourseTeacher[];
+
+  @OneToMany(() => ClassCourseSession, classCourseSession => classCourseSession.classCourse,)
+  classCourseSessions: ClassCourseSession[]
 
 }

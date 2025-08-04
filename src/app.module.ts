@@ -10,6 +10,8 @@ import { ClassCourseModule } from './class_course/class_course.module';
 import { ClassCourseTeacherModule } from './class-course_teacher/class-course_teacher.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/datasource';
+import { AttendanceModule } from './attendance/attendance.module';
+import { ClassCourseSessionModule } from './class-course-session/class-course-session.module';
 
 @Module({
   imports: [
@@ -20,7 +22,9 @@ import { dataSourceOptions } from './config/datasource';
     CourseModule,
     ClassCourseModule,
     ClassCourseTeacherModule,
-    TypeOrmModule.forRoot(dataSourceOptions)
+    TypeOrmModule.forRoot(dataSourceOptions),
+    AttendanceModule,
+    ClassCourseSessionModule
     
   ],
   controllers: [AppController],

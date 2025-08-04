@@ -12,7 +12,7 @@ export class TeacherController {
   teacherInformation(@Query() teacherFilter:TeacherFilterDto) {
     return this.teacherService.teacherInformation(teacherFilter);
   }
-
+//this route to be in attendance table
   @Patch('students/attendance')
   markAttendance(@Body() attendanceDto: AttendanceDto) {
     return this.teacherService.markAttendance(attendanceDto);
