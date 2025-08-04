@@ -1,7 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TeacherFilterDto } from 'src/teacher/dto/teacherFilter.dto';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { DataSource, Repository } from 'typeorm';
+
+const DEFAULT_LIMIT = Number(process.env.LIMIT);
+const DEFAULT_PAGE = Number(process.env.PAGE);
 
 @Injectable()
 export class TeacherRepository extends Repository<Teacher> {
@@ -18,8 +21,7 @@ export class TeacherRepository extends Repository<Teacher> {
   }
 
   async teacherInformation(teacherFilter: TeacherFilterDto){
-        const DEFAULT_LIMIT = Number(process.env.LIMIT);
-        const DEFAULT_PAGE = Number(process.env.PAGE);
+       
     
         const {
           isActive,

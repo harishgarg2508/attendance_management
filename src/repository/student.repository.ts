@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Class } from 'src/class/entities/class.entity';
 import { StudentFilterDto } from 'src/student/dto/studentFilter.deto';
 import { Student } from 'src/student/entities/student.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
+
+const DEFAULT_LIMIT = Number(process.env.LIMIT);
+const DEFAULT_PAGE = Number(process.env.PAGE);
+
 
 @Injectable()
 export class StudentRepository extends Repository<Student> {
@@ -32,8 +36,7 @@ export class StudentRepository extends Repository<Student> {
   }
 
   async studentInformation(studentFilter: StudentFilterDto) {
-    const DEFAULT_LIMIT = Number(process.env.LIMIT);
-    const DEFAULT_PAGE = Number(process.env.PAGE);
+
 
     const {
       isActive,
@@ -48,10 +51,7 @@ export class StudentRepository extends Repository<Student> {
       .leftJoinAndSelect('classes.student','students')
       .leftJoinAndSelect('classes.classCourses', 'classCourses')
       .leftJoinAndSelect('classCourses.course', 'course')
-      .leftJoinAndSelect(
-        'classCourses.classCourseTeachers',
-        'classCourseTeachers',
-      );
+      .leftJoinAndSelect('classCourses.classCourseTeachers','classCourseTeachers',);
 
     if (name) {
       qb.andWhere('student.name LIKE :name', { name: `%${name}%` });

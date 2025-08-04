@@ -26,6 +26,14 @@ export class AdminSeeder implements Seeder {
         name: 'admin3',
         adminId: 123789,
       },
+      {
+        name: 'admin4',
+        adminId: 987654,
+      },
+      {
+        name: 'admin5',
+        adminId: 456789,
+      },
     ];
     await adminRepository.save(adminData);
     console.log('Admin seeding successful!');

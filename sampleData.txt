@@ -22,11 +22,11 @@ POST /class
   "courseTeacher": [
     {
       "courseId": 10,
-      "teacherId": 1001
+      "teacherId": 1
     },
     {
       "courseId": 11,
-      "teacherId": 1002
+      "teacherId": 1
     }
   ]
 }

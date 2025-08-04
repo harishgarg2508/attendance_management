@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ClassCourseTeacher } from 'src/class-course_teacher/entities/class-course_teacher.entity';
 import { ClassCourse } from 'src/class_course/entities/class_course.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
