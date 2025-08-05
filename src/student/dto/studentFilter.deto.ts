@@ -4,22 +4,33 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class StudentFilterDto {
   @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
-  studentId: string;
+  studentId?: string;
 
   @IsOptional()
-  isActive: boolean;
-
-  @IsOptional()
-  @IsNumber()
-  page: number;
+  isActive?: boolean;
 
   @IsOptional()
   @IsNumber()
-  limit: number;
+  page?: number;
+
+  @IsOptional()
+  @IsNumber()
+  limit?: number;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsNumber()
+
+  classId?: number;
+  
+  @IsOptional()
+  @IsNumber()
+  courseId?: number;
+
 
   @IsOptional()
   @Transform(({ value }) => {

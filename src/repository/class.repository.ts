@@ -3,12 +3,13 @@ import { Admin } from 'src/admin/entities/admin.entity';
 import { CreateClassDto } from 'src/class/dto/create-class.dto';
 import { FilterDto } from 'src/class/dto/filter.dto';
 import { Class } from 'src/class/entities/class.entity';
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/constants';
 import { DataSource, EntityManager,Repository } from 'typeorm';
     
 
 
-const DEFAULT_LIMIT = Number(process.env.LIMIT);
-const DEFAULT_PAGE = Number(process.env.PAGE);
+const defaultLimit = DEFAULT_LIMIT
+const defaultPage = DEFAULT_PAGE
 @Injectable()
 export class ClassRepository extends Repository<Class> {
   constructor(private readonly dataSource: DataSource) {

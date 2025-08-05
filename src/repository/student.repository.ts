@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Class } from 'src/class/entities/class.entity';
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/constants';
 import { StudentFilterDto } from 'src/student/dto/studentFilter.deto';
 import { Student } from 'src/student/entities/student.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 
-const DEFAULT_LIMIT = Number(process.env.LIMIT);
-const DEFAULT_PAGE = Number(process.env.PAGE);
+
+const defaultLimit = DEFAULT_LIMIT
+const defaultPage = DEFAULT_PAGE
+
 
 
 @Injectable()
@@ -44,7 +47,10 @@ export class StudentRepository extends Repository<Student> {
       limit = DEFAULT_LIMIT,
       name,
       studentId,
-      studentIds
+      studentIds,
+      courseId,
+      classId
+
     } = studentFilter;
     const qb = this.createQueryBuilder('student')
       .leftJoinAndSelect('student.classes', 'classes')
@@ -67,6 +73,11 @@ export class StudentRepository extends Repository<Student> {
 
     if (isActive) {
       qb.andWhere('student.isActive = :isActive', { isActive });
+    }
+
+    if(classId ){
+      qb.andWhere('classes.id = :classId', { classId })
+
     }
 
     qb.orderBy('student.id','ASC')

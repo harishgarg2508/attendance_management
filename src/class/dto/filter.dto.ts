@@ -6,28 +6,28 @@ export class FilterDto {
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  classId: number;
+  classId?: number;
 
 
   @IsOptional()
   @IsString()
-  standard: Standard;
+  standard?: Standard;
 
 
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  courseId: number;
-
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  @Type(() => Number)
-  page: number;
+  courseId?: number;
 
   @IsOptional()
   @IsInt()
   @Min(1)
   @Type(() => Number)
-  limit: number;
+  page?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Type(() => Number)
+  limit?: number;
 }
