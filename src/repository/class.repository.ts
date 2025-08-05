@@ -4,7 +4,8 @@ import { CreateClassDto } from 'src/class/dto/create-class.dto';
 import { FilterDto } from 'src/class/dto/filter.dto';
 import { Class } from 'src/class/entities/class.entity';
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/constants';
-import { DataSource, EntityManager,Repository } from 'typeorm';
+import { DataSource, EntityManager,Repository, Transaction } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
     
 
 
@@ -16,17 +17,18 @@ export class ClassRepository extends Repository<Class> {
     super(Class, dataSource.createEntityManager());
   }
 
+  @Transactional()
   async createClass(
     createClassDto: CreateClassDto,
     admin: Admin,
-    manager: EntityManager,
+    // manager: EntityManager,
   ): Promise<Class> {
-    const classEntity = manager.create(Class, {
+    const classEntity = this.create( {
       ...createClassDto,
       admin,
     });
 
-    const classData = await manager.save(classEntity);
+    const classData = await this.save(classEntity);
     return classData;
   }
 

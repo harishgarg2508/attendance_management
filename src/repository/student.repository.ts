@@ -4,6 +4,7 @@ import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/constants';
 import { StudentFilterDto } from 'src/student/dto/studentFilter.deto';
 import { Student } from 'src/student/entities/student.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 
 const defaultLimit = DEFAULT_LIMIT
@@ -17,13 +18,14 @@ export class StudentRepository extends Repository<Student> {
     super(Student, dataSource.createEntityManager());
   }
 
+  @Transactional()
   async addStudents(
     classEntity: Class,
     studentEntity: Student,
-    manager: EntityManager,
+    // manager: EntityManager,
   ) {
     studentEntity.classes = classEntity;
-    return await manager.save(studentEntity);
+    return await this.save(studentEntity);
   }
 
   async updateStudentStatus(

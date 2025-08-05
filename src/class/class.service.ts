@@ -7,8 +7,8 @@ import { DataSource } from 'typeorm';
 import { ClassCourseTeacherService } from 'src/class-course_teacher/class-course_teacher.service';
 import { StudentRepository } from 'src/repository/student.repository';
 import { StudentService } from 'src/student/student.service';
-import { Admin } from 'src/admin/entities/admin.entity';
 import { FilterDto } from './dto/filter.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassService {
@@ -22,15 +22,14 @@ export class ClassService {
     private dataSource: DataSource,
   ) {}
 
-  
+  @Transactional()
   async createClass(createClassDto: CreateClassDto) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    // const queryRunner = this.dataSource.createQueryRunner();
+    // await queryRunner.connect();
+    // await queryRunner.startTransaction();
     
-    try {
-      const manager = queryRunner.manager;
-      const admin = await manager.findOneBy(Admin,{
+      // const manager = queryRunner.manager;
+      const admin = await this.adminRepository.findOneBy({
         id: createClassDto.adminId,
 
       });
@@ -42,13 +41,13 @@ export class ClassService {
       const classEntity = await this.classRepository.createClass(
         createClassDto,
         admin,
-        manager,
+        // manager,
       );
       const classId = classEntity.id;
 
       for(const student of createClassDto.students){
         
-        const studentData = await this.studentService.addStudent(classEntity, student.studentId,manager);
+        const studentData = await this.studentService.addStudent(classEntity, student.studentId);
              
         
       }
@@ -57,30 +56,20 @@ export class ClassService {
         const classCourse = await this.classCourseService.addCourse(
           classId,
           courseTeacher.courseId,
-          manager,
+          // manager,
         );
         const classCourseTeacher =
           await this.ClassCourseTeacherService.addClassCourseTeacher(
             classCourse.id,
             courseTeacher.teacherId,
-            manager,
+            // manager,
           );
       }
       //bulk data save 
       //transactional manager decorator
 
-      await queryRunner.commitTransaction();
-      return {
-        message: 'Class created successfully',
-        class: classEntity,
-        courseTeacher: createClassDto.courseTeacher,
-      };
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
+      // await queryRunner.commitTransaction();
+     
   }
 
   async getClassInformation(filters:FilterDto){

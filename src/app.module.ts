@@ -12,6 +12,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/datasource';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ClassCourseSessionModule } from './class-course-session/class-course-session.module';
+import { addTransactionalDataSource } from 'typeorm-transactional';
+import { DataSource } from 'typeorm';
+
 
 @Module({
   imports: [
@@ -22,9 +25,21 @@ import { ClassCourseSessionModule } from './class-course-session/class-course-se
     CourseModule,
     ClassCourseModule,
     ClassCourseTeacherModule,
-    TypeOrmModule.forRoot(dataSourceOptions),
     AttendanceModule,
-    ClassCourseSessionModule
+    ClassCourseSessionModule,
+    TypeOrmModule.forRootAsync({
+      useFactory() {
+        return dataSourceOptions; 
+      },
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
+    }),
+
+
     
   ],
   controllers: [AppController],

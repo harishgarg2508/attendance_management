@@ -9,7 +9,7 @@ export class Class {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type:'enum',unique: true,enum:Standard})
+    @Column({type:'enum',enum:Standard})
     standard: Standard;
 
     @Column({nullable: true})

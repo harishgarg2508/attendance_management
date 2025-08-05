@@ -3,11 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+// import { CreateStudentDto } from './dto/create-student.dto';
+// import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentRepository } from 'src/repository/student.repository';
 import { Class } from 'src/class/entities/class.entity';
-import { EntityManager } from 'typeorm';
+import { EntityManager, Transaction } from 'typeorm';
 import { Student } from './entities/student.entity';
 import {
   AttendanceStatus,
@@ -16,6 +16,7 @@ import {
 import { AddStudentDto } from 'src/class/dto/student.dto';
 import { ClassRepository } from 'src/repository/class.repository';
 import { StudentFilterDto } from './dto/studentFilter.deto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class StudentService {
@@ -24,13 +25,13 @@ export class StudentService {
     private readonly classRepository: ClassRepository,
   ) {}
 
-
+  @Transactional()
   async addStudent(
     classEntity: Class,
     studentId: number,
-    manager: EntityManager,
+    // manager: EntityManager,
   ) {
-    const student = await manager.findOne(Student, {
+    const student = await this.studentRepository.findOne( {
       where: { id: studentId },
       relations: ['classes'],
     });
@@ -45,7 +46,7 @@ export class StudentService {
 
 
 
-    return this.studentRepository.addStudents(classEntity, student, manager);
+    return this.studentRepository.addStudents(classEntity, student);
   }
 
   async updateStudentStatus(studentId: number) {

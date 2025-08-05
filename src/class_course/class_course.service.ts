@@ -9,6 +9,7 @@ import { Course } from 'src/course/entities/course.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { ClassCourseTeacherRepository } from 'src/repository/class-course_teacher.repository';
 import { ClassCourse } from './entities/class_course.entity';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassCourseService {
@@ -19,18 +20,19 @@ export class ClassCourseService {
     private readonly dataSource: DataSource
   ) {}
  
-  async addCourse(classId: number,courseId: number,manager:EntityManager){ {
-    const classEntity = await manager.findOneBy(Class,{id: classId});
+  @Transactional()
+  async addCourse(classId: number,courseId: number){ {
+    const classEntity = await this.classRepository.findOneBy({id: classId});
     if(!classEntity){
       throw new NotFoundException('Class not found');
     }
 
-    const courseEntity = await manager.findOneBy(Course,{id: courseId});
+    const courseEntity = await this.courseRepository.findOneBy({id: courseId});
     if(!courseEntity){
       throw new NotFoundException('Course not found');
     }
 
-    const classCourseEntity = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id,manager);
+    const classCourseEntity = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id);
     return classCourseEntity;
    
   }
@@ -78,8 +80,8 @@ async updateClassCourse(classCourseTeacherDto: ClassCourseTeacherDto) {
       return `Teacher with ID ${teacherId} is updated  to the course with ID ${courseId} in class with ID ${classId} successfully.`
     }
     else{
-     const newClassCourse = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id, manager);
-      await this.classCourseTeacherRepository.addNewClassCourseTeacher(newClassCourse.id, teacherEntity.id, manager);
+     const newClassCourse = await this.classCourseRepository.addClassCourse(classEntity.id, courseEntity.id);
+      await this.classCourseTeacherRepository.addNewClassCourseTeacher(newClassCourse.id, teacherEntity.id);
     }
    
 

@@ -12,4 +12,11 @@ export enum Standard {
   TENTH = '10th',
   ELEVENTH = '11th',
   TWELFTH = '12th',
+  A = 'a',
+  B = 'b',
+  C = 'c',
+  D = 'd',
+  E = 'e',
+  F = 'f',
+
 }

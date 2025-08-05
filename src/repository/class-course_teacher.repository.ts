@@ -3,6 +3,7 @@ import { ClassCourseTeacher } from 'src/class-course_teacher/entities/class-cour
 import { ClassCourse } from 'src/class_course/entities/class_course.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { DataSource, EntityManager, Repository } from 'typeorm';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher> {
@@ -10,18 +11,19 @@ export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher>
     super(ClassCourseTeacher, dataSource.createEntityManager());
   }
 
+  @Transactional()
   async addClassCourseTeacher(
     classCourse: ClassCourse,
     teacher: Teacher,
-    manager: EntityManager,
+    // manager: EntityManager,
   ) {
     {
-      const classCourseTeacherEntity = manager.create(ClassCourseTeacher, {
+      const classCourseTeacherEntity = this.create( {
         classCourse,
         teacher,
       });
 
-      const classCourseTeacher = await manager.save(classCourseTeacherEntity);
+      const classCourseTeacher = await this.save(classCourseTeacherEntity);
 
       return classCourseTeacher;
     }
@@ -35,13 +37,13 @@ export class ClassCourseTeacherRepository extends Repository<ClassCourseTeacher>
     );
   }
 
-  async addNewClassCourseTeacher(classCourseId: number, teacherId: number,manager: EntityManager){ 
-    const newClassCourseTeacher = manager.create(ClassCourseTeacher, {
+  async addNewClassCourseTeacher(classCourseId: number, teacherId: number){ 
+    const newClassCourseTeacher = this.create({
       classCourse: { id: classCourseId },
       teacher: { id: teacherId },
     
     })
-    await manager.save(newClassCourseTeacher);
+    await this.save(newClassCourseTeacher);
     return newClassCourseTeacher;
   }
     

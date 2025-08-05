@@ -1,12 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { initializeTransactionalContext, patchTypeORMRepositoryWithBaseRepository } from 'typeorm-transactional-cls-hooked';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 
 async function bootstrap() {
   initializeTransactionalContext()
-  patchTypeORMRepositoryWithBaseRepository()
-
   const app = await NestFactory.create(AppModule);
    app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -21,3 +19,5 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
+
+//$ npm install typeorm-transactional reflect-metadata cls-hooked
